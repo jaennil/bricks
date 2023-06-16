@@ -11,7 +11,7 @@ class Ball extends MovableSprite {
 
 	static {
 		try {
-			image = ImageIO.read(new File("src/ball.gif"));
+			image = ImageIO.read(new File("images/ball.gif"));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

@@ -24,9 +24,9 @@ abstract public class Brick extends StationarySprite {
 	static {
 		images = new HashMap<>();
 		try {
-			images.put(Type.DEFAULT, ImageIO.read(new File("src/bricks/default.gif")));
-			images.put(Type.HARD, ImageIO.read(new File("src/bricks/hard.gif")));
-			images.put(Type.POWER, ImageIO.read(new File("src/bricks/power.gif")));
+			images.put(Type.DEFAULT, ImageIO.read(new File("images/bricks/default.gif")));
+			images.put(Type.HARD, ImageIO.read(new File("images/bricks/hard.gif")));
+			images.put(Type.POWER, ImageIO.read(new File("images/bricks/power.gif")));
 		} catch (IOException e) {
 			System.out.println("cant find brick images");
 			throw new RuntimeException(e);

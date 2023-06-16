@@ -15,7 +15,7 @@ class Racket extends MovableSprite implements KeyListener {
 
 	static {
 		try {
-			image = ImageIO.read(new File("src/racket.gif"));
+			image = ImageIO.read(new File("images/racket.gif"));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
