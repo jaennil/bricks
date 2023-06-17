@@ -1,17 +1,18 @@
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 import java.util.Vector;
 
 public class BrickStorage {
 
-	private Vector<Brick> bricks;
+	private ArrayList<Brick> bricks;
 	private PlayField playField;
 	private final int rows = 4;
 	private final int columns = 10;
 
 	public BrickStorage(PlayField playField){
 		this.playField = playField;
-		bricks = new Vector<>();
+		bricks = new ArrayList<>();
 		int startX = 80;
 		int x = startX;
 		int y = 100;
@@ -21,7 +22,8 @@ public class BrickStorage {
 				Brick.Type brickType = Brick.Type.random();
 				Brick newBrick = brick(x, y, brickType);
 				playField.addSprite(newBrick);
-				bricks.addElement(newBrick); //!!!
+				if (newBrick instanceof WallBrick == false)
+					bricks.add(newBrick);
 				x += Brick.images.get(brickType).getWidth(null);
 			}
 
@@ -37,6 +39,7 @@ public class BrickStorage {
 			case DEFAULT -> new DefaultBrick(this.playField, this, bounds);
 			case HARD -> new HardBrick(this.playField, this, bounds);
 			case POWER -> new PowerBrick(this.playField, this, bounds);
+			case WALL -> new WallBrick(this.playField, this, bounds);
 		};
 	}
 
@@ -48,12 +51,11 @@ public class BrickStorage {
 
 	public int unbrokenCount() {
 		int result = 0;
-		
-		for (int i = 0; i < bricks.size(); i++) {
-			if ( !((Brick) bricks.elementAt(i)).isDead() )
-				result++; 	
+
+		for (Brick brick : bricks) {
+			if (brick.isDead() == false)
+				result++;
 		}
-		
 		return result;
 	}
 

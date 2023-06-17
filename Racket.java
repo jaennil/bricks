@@ -32,7 +32,7 @@ class Racket extends MovableSprite implements KeyListener {
 			image.getHeight(playField)
 			),
 			0,
-			10);
+			1);
 		
 		this.playField.addKeyListener(this);
 	}
@@ -50,13 +50,14 @@ class Racket extends MovableSprite implements KeyListener {
 	}
 
 	public void hitBy(Ball ball) {
+		System.out.println(ball.getDirection());
 		if ( ball.getDirection() == 90 ) {
-			ball.setDirection(270 + ALPHA);
+			ball.setDirection(70);
 		} else {
 			int px = ball.getBounds().x + ball.getBounds().width/2;
 			int l  = (int) (bounds.x + bounds.width*(1.0/3));
 			int r  = (int) (bounds.x + bounds.width*(2.0/3));
-      
+
 			if ( px < l || px > r ) {
 				ball.getVelocity().reverse();
 			} else {
@@ -65,7 +66,6 @@ class Racket extends MovableSprite implements KeyListener {
 		}
 	}
 	
-	/* Обработка нажатия клавиши */
 	public void keyPressed(KeyEvent keyEvent) {
 		if (keyEvent.getKeyCode() == LEFT) {
 			startMoving();
@@ -76,7 +76,6 @@ class Racket extends MovableSprite implements KeyListener {
 		}
 	}
 	
-	/* Обработка отжатия клавиши */
 	public void keyReleased(KeyEvent e) {
 		stopMoving();
 	}

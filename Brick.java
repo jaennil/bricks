@@ -9,7 +9,7 @@ import java.util.HashMap;
 abstract public class Brick extends StationarySprite {
 
 	public enum Type {
-		DEFAULT, HARD, POWER;
+		DEFAULT, HARD, POWER, WALL;
 
 		public static Type random() {
 			Type[] types = values();
@@ -17,32 +17,33 @@ abstract public class Brick extends StationarySprite {
 		}
 
 	}
-	protected BrickStorage brickPile;
+	protected BrickStorage brickStorage;
 
 	public static HashMap<Type, BufferedImage> images;
 
 	static {
 		images = new HashMap<>();
 		try {
-			images.put(Type.DEFAULT, ImageIO.read(new File("images/bricks/default.gif")));
-			images.put(Type.HARD, ImageIO.read(new File("images/bricks/hard.gif")));
-			images.put(Type.POWER, ImageIO.read(new File("images/bricks/power.gif")));
+			images.put(Type.DEFAULT, ImageIO.read(new File("images/bricks/default.png")));
+			images.put(Type.HARD, ImageIO.read(new File("images/bricks/hard.png")));
+			images.put(Type.POWER, ImageIO.read(new File("images/bricks/power.png")));
+			images.put(Type.WALL, ImageIO.read(new File("images/bricks/wall.png")));
 		} catch (IOException e) {
 			System.out.println("cant find brick images");
 			throw new RuntimeException(e);
 		}
 	}
 
-	public Brick(PlayField playField, BrickStorage brickPile, Rectangle bounds, Image image) {
+	public Brick(PlayField playField, BrickStorage brickStorage, Rectangle bounds, Image image) {
 		super(playField, bounds, image);
-		this.brickPile = brickPile;
+		this.brickStorage = brickStorage;
 	}
 
 	public void hitBy(Ball ball) {
 		isDead = true;
 		ball.getVelocity().reverseY();
 	
-		if (brickPile.unbrokenCount() == 0) {
+		if (brickStorage.unbrokenCount() == 0) {
 			playField.getFrame().win();
 		}
 	}

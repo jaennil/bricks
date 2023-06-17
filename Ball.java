@@ -21,9 +21,9 @@ class Ball extends MovableSprite {
 		super(
 			playField,
 			image,
-			(new Rectangle(playField.getWidth()/2, playField.getHeight()/2, image.getWidth(playField), image.getHeight(playField))),
+			(new Rectangle(playField.getWidth()/2, playField.getHeight()/2+50, image.getWidth(playField), image.getHeight(playField))),
 			90,
-			10);
+			3);
 		isMoving = true;
 		this.ballsStorage = ballsStorage;
 		this.playField = playField;
@@ -36,7 +36,7 @@ class Ball extends MovableSprite {
 		Rectangle playFieldBoundary = playField.getBoundary();
 
 		prevPos = bounds;
-		bounds.translate(velocity.getSpeedX(), velocity.getSpeedY());
+		bounds.translate((int)Math.round(velocity.getSpeedX()), (int)Math.round(velocity.getSpeedY()));
     
 		if (bounds.x <= playFieldBoundary.x) {
 			bounds.x = playFieldBoundary.x;

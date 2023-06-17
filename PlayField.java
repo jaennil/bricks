@@ -1,7 +1,10 @@
+import javax.swing.*;
 import java.awt.Canvas;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 class PlayField extends Canvas implements Runnable {
 	private Thread gameThread;
@@ -10,7 +13,7 @@ class PlayField extends Canvas implements Runnable {
 	private Frame frame;
 	private Image offImage;
 	private Graphics offGraphics;
-	private final int delay = 40;
+	private final int delay = 50;
 
 	public PlayField(Frame frame) {
 		sprites = new SpritesArray();
@@ -36,19 +39,26 @@ class PlayField extends Canvas implements Runnable {
 	}
 
 	public void run() {
-		Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
-		long theStartTime = System.currentTimeMillis();
+//		Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
+//		long theStartTime = System.currentTimeMillis();
 	
-		while (Thread.currentThread() == gameThread) {
-			sprites.update();
-			repaint();
-			try {
-				theStartTime += delay;
-				Thread.sleep(Math.max(0, theStartTime - System.currentTimeMillis()));
-			} catch (InterruptedException e) {
-				break;
+//		while (Thread.currentThread() == gameThread) {
+		ActionListener actionListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				sprites.update();
+				repaint();
 			}
-		}
+		};
+		Timer timer = new Timer(delay, actionListener);
+		timer.start();
+//			try {
+//				theStartTime += delay;
+//				Thread.sleep(Math.max(0, theStartTime - System.currentTimeMillis()));
+//				Thread.sleep(10);
+//			} catch (InterruptedException e) {
+//				break;
+//			}
 	}
 
 	public void start() {
