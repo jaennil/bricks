@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 public class BrickStorage extends ArrayList<Brick> {
 
-	private PlayField playField;
-	private final int rows = 1;
-	private final int columns = 1;
+	private final PlayField playField;
+	private final int rows = 2;
+	private final int columns = 2;
 
 	public BrickStorage(PlayField playField){
 		this.playField = playField;
@@ -19,9 +19,7 @@ public class BrickStorage extends ArrayList<Brick> {
 				Brick.Type brickType = Brick.Type.random();
 				Brick newBrick = constructBrick(x, y, brickType);
 				playField.addSprite(newBrick);
-				// test stuff to check if game ends when all bricks destroyed except wallBricks
-				if (newBrick instanceof WallBrick == false)
-					add(newBrick);
+				add(newBrick);
 				x += Brick.images.get(brickType).getWidth(null);
 			}
 
@@ -50,8 +48,10 @@ public class BrickStorage extends ArrayList<Brick> {
 	public int aliveAmount() {
 		int amount = 0;
 		for (Brick brick : this) {
-			if (brick.isDead() == false)
-				amount++;
+			if (brick.isDead() == false) {
+				if (brick instanceof WallBrick == false)
+					amount++;
+			}
 		}
 		return amount;
 	}

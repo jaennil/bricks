@@ -42,10 +42,6 @@ abstract public class Brick extends Sprite {
 	public void hitBy(Ball ball) {
 		isDead = true;
 		ball.getVelocity().reverseY();
-	
-		if (brickStorage.aliveAmount() == 0) {
-//			playField.win();
-		}
 	}
 
 	public void update() {

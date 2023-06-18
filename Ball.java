@@ -7,8 +7,8 @@ import java.io.IOException;
 class Ball extends MovableSprite implements Runnable {
 	private Thread thread;
 	private int delay = 5;
-	private BallsStorage ballsStorage;
-	private PlayField playField;
+	private final BallsStorage ballsStorage;
+	private final PlayField playField;
 	private final static BufferedImage image;
 
 	static {
@@ -24,9 +24,8 @@ class Ball extends MovableSprite implements Runnable {
 			playField,
 			image,
 			(new Rectangle(playField.getWidth()/2, playField.getHeight()/2+50, image.getWidth(playField), image.getHeight(playField))),
-				135,
-			2);
-//		isMoving = true;
+				200,
+			3);
 		this.ballsStorage = ballsStorage;
 		this.playField = playField;
 		while (true) {
@@ -58,22 +57,14 @@ class Ball extends MovableSprite implements Runnable {
 			velocity.reverseY();
 		} else if (bounds.y + bounds.height > playFieldBoundary.y + playFieldBoundary.height) {
 			isDead = true;
-			if (ballsStorage.size() == 0) {
-//				playField.lose();
-			} else {
-				ballsStorage.remove(0);
-			}
+			ballsStorage.remove(0);
 		}
 
-		/* Обработка соударения с другими спрайтами */
-		if (collideWith() != null) {
+		Sprite collisionWith = collideWith();
+		if (collisionWith != null) {
 			bounds = prevPos;
-			collideInto(collideWith());
+			collisionWith.hitBy(this);
 		}
-	}
-
-	public void collideInto(Sprite sprite) {
-		sprite.hitBy(this);
 	}
 
 	public void run() {

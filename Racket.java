@@ -57,7 +57,6 @@ class Racket extends MovableSprite implements Runnable, KeyListener {
 	}
 
 	public void hitBy(Ball ball) {
-		System.out.println(ball.getDirection());
 		if ( ball.getDirection() == 90 ) {
 			ball.setDirection(70);
 		} else {
@@ -75,7 +74,6 @@ class Racket extends MovableSprite implements Runnable, KeyListener {
 	
 	public void run() {
 		while (true) {
-//			System.out.println("racket thread running...");
 			move();
 			try {
 				Thread.sleep(DELAY);
