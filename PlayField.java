@@ -4,7 +4,7 @@ import java.awt.*;
 class PlayField extends JPanel implements Runnable {
 	private Window window;
 	private Thread thread;
-	private int DELAY = 1;
+	private int DELAY = 0;
 	private SpritesArray sprites;
 	private BrickStorage brickStorage;
 	private BallsStorage ballsStorage;
@@ -12,6 +12,7 @@ class PlayField extends JPanel implements Runnable {
 	private static final int HEIGHT = 700;
 	private static final int WIDTH = 700;
 	private static final Rectangle BOUNDS = new Rectangle(0, 0, WIDTH, HEIGHT);
+	private boolean running = true;
 
 	public PlayField(Window window) {
 		this.window = window;
@@ -21,12 +22,12 @@ class PlayField extends JPanel implements Runnable {
 		thread.start();
 		brickStorage = new BrickStorage(this);
 		racket = new Racket(this);
-		ballsStorage = new BallsStorage(this, 3);
+		ballsStorage = new BallsStorage(this, 2);
 
 	}
 
 	public void run() {
-		while (true) {
+		while (running) {
 			sprites.update();
 			repaint();
 			try {
@@ -42,15 +43,31 @@ class PlayField extends JPanel implements Runnable {
 		graphics.clearRect(0, 0, WIDTH, HEIGHT);
 		sprites.draw(graphics);
 		racket.draw(graphics);
-		Ball aliveBall = ballsStorage.getFirst();
-		if (aliveBall != null) {
-			aliveBall.draw(graphics);
+//		Ball aliveBall = ballsStorage.getFirst();
+		if (ballsStorage.size() == 0) {
+			lose(graphics);
+			return;
 		}
+		if (brickStorage.aliveAmount() == 0) {
+			win(graphics);
+			return;
+		}
+		ballsStorage.getFirst().draw(graphics);
 		graphics.drawString("balls: " + ballsStorage.size(), 50, 50);
 	}
 
 	public void addSprite(Sprite sprite) {
 		sprites.add(sprite);
+	}
+
+	public void lose(Graphics graphics) {
+		running = false;
+		graphics.drawString("you lost", WIDTH/2, HEIGHT/2);
+	}
+
+	public void win(Graphics graphics) {
+		running = false;
+		graphics.drawString("you win", WIDTH/2, HEIGHT/2);
 	}
 
 	public Sprite testCollision(Sprite inputSprite) {

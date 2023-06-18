@@ -43,7 +43,7 @@ abstract public class Brick extends Sprite {
 		isDead = true;
 		ball.getVelocity().reverseY();
 	
-		if (brickStorage.unbrokenCount() == 0) {
+		if (brickStorage.aliveAmount() == 0) {
 //			playField.win();
 		}
 	}

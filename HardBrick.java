@@ -16,7 +16,7 @@ public class HardBrick extends Brick {
             super.image = images.get(Type.DEFAULT);
             ball.getVelocity().reverseY();
 
-            if (brickStorage.unbrokenCount() == 0) {
+            if (brickStorage.aliveAmount() == 0) {
 //                playField.win();
             }
         }

@@ -6,7 +6,7 @@ import java.io.IOException;
 
 class Ball extends MovableSprite implements Runnable {
 	private Thread thread;
-	private int delay = 10;
+	private int delay = 5;
 	private BallsStorage ballsStorage;
 	private PlayField playField;
 	private final static BufferedImage image;
@@ -25,7 +25,7 @@ class Ball extends MovableSprite implements Runnable {
 			image,
 			(new Rectangle(playField.getWidth()/2, playField.getHeight()/2+50, image.getWidth(playField), image.getHeight(playField))),
 				135,
-			1);
+			2);
 //		isMoving = true;
 		this.ballsStorage = ballsStorage;
 		this.playField = playField;
@@ -62,13 +62,11 @@ class Ball extends MovableSprite implements Runnable {
 //				playField.lose();
 			} else {
 				ballsStorage.remove(0);
-//				playField.addSprite(ballsStorage.get());
 			}
 		}
 
 		/* Обработка соударения с другими спрайтами */
 		if (collideWith() != null) {
-			System.out.println("ball collide");
 			bounds = prevPos;
 			collideInto(collideWith());
 		}

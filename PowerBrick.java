@@ -10,6 +10,6 @@ public class PowerBrick extends Brick {
     public void hitBy(Ball ball) {
         super.hitBy(ball);
         Velocity ballVelocity = ball.getVelocity();
-        ball.setDelay(ball.getDelay()-2);
+        ball.setDelay(Math.abs(ball.getDelay()-2));
     }
 }
