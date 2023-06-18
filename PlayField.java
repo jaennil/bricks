@@ -1,101 +1,78 @@
 import javax.swing.*;
-import java.awt.Canvas;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Rectangle;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import java.awt.*;
 
-class PlayField extends Canvas implements Runnable {
-	private Thread gameThread;
+class PlayField extends JPanel implements Runnable {
+	private Window window;
+	private Thread thread;
+	private int DELAY = 1;
 	private SpritesArray sprites;
-	private Rectangle bounds;
-	private Frame frame;
-	private Image offImage;
-	private Graphics offGraphics;
-	private final int delay = 50;
+	private BrickStorage brickStorage;
+	private BallsStorage ballsStorage;
+	private Racket racket;
+	private static final int HEIGHT = 700;
+	private static final int WIDTH = 700;
+	private static final Rectangle BOUNDS = new Rectangle(0, 0, WIDTH, HEIGHT);
 
-	public PlayField(Frame frame) {
+	public PlayField(Window window) {
+		this.window = window;
+		setSize(WIDTH, HEIGHT);
 		sprites = new SpritesArray();
-		this.frame = frame;
-	}
+		thread = new Thread(this);
+		thread.start();
+		brickStorage = new BrickStorage(this);
+		racket = new Racket(this);
+		ballsStorage = new BallsStorage(this, 3);
 
-	@Override
-	public void paint(Graphics graphics) {
-		graphics.drawImage(offImage, 0, 0, null);
-	}
-
-	@Override
-	public void update(Graphics graphics) {
-		if (offGraphics == null) {
-			offImage = createImage(getWidth(), getHeight());
-			offGraphics = offImage.getGraphics();
-		}
-
-		offGraphics.clearRect(0, 0, getWidth(), getHeight());
-		sprites.draw(offGraphics);
-		drawMessage(frame.getMessage());
-		graphics.drawImage(offImage, 0, 0, null);
 	}
 
 	public void run() {
-//		Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
-//		long theStartTime = System.currentTimeMillis();
-	
-//		while (Thread.currentThread() == gameThread) {
-		ActionListener actionListener = new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				sprites.update();
-				repaint();
+		while (true) {
+			sprites.update();
+			repaint();
+			try {
+				Thread.sleep(DELAY);
+			} catch (InterruptedException e) {
+				throw new RuntimeException(e);
 			}
-		};
-		Timer timer = new Timer(delay, actionListener);
-		timer.start();
-//			try {
-//				theStartTime += delay;
-//				Thread.sleep(Math.max(0, theStartTime - System.currentTimeMillis()));
-//				Thread.sleep(10);
-//			} catch (InterruptedException e) {
-//				break;
-//			}
-	}
-
-	public void start() {
-		if (gameThread == null) {
-			bounds = new Rectangle(0, 0, getWidth(), getHeight());
-			gameThread = new Thread(this);
-			gameThread.start();
 		}
 	}
 
-	void stop() {
-		if (gameThread != null) {
-			gameThread = null;
+	@Override
+	public void paintComponent(Graphics graphics) {
+		graphics.clearRect(0, 0, WIDTH, HEIGHT);
+		sprites.draw(graphics);
+		racket.draw(graphics);
+		Ball aliveBall = ballsStorage.getFirst();
+		if (aliveBall != null) {
+			aliveBall.draw(graphics);
 		}
+		graphics.drawString("balls: " + ballsStorage.size(), 50, 50);
 	}
 
-	public Frame getFrame() {
-		return frame;
-	}
-  
 	public void addSprite(Sprite sprite) {
 		sprites.add(sprite);
 	}
 
-	public void clean() {
-		sprites.clear();
-	}
-
-	public Sprite testCollision(Sprite sprite) {
-		return sprites.testCollision(sprite);
-	}
-
-	private void drawMessage(String string) {
-		offGraphics.drawString(string,getWidth()/2-20,getHeight()/2);
+	public Sprite testCollision(Sprite inputSprite) {
+		// найти спрайт с которым произошла коллизия. есть не произошла то null
+		Sprite sprite = sprites.testCollision(inputSprite);
+		if (sprite == null) {
+			if (racket.testCollision(inputSprite))
+				return racket;
+			return null;
+		}
+		return sprite;
 	}
 
 	public Rectangle getBoundary() {
-		return bounds;
+		return BOUNDS;
+	}
+
+	public Window getWindow() {
+		return window;
+	}
+
+	public Thread getThread() {
+		return thread;
 	}
 }

@@ -1,14 +1,13 @@
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.util.ArrayList;
-import java.util.Vector;
 
 public class BrickStorage {
 
-	private ArrayList<Brick> bricks;
 	private PlayField playField;
-	private final int rows = 4;
-	private final int columns = 10;
+	private ArrayList<Brick> bricks;
+	private final int rows = 6;
+	private final int columns = 15;
 
 	public BrickStorage(PlayField playField){
 		this.playField = playField;
@@ -20,8 +19,9 @@ public class BrickStorage {
 		for(int row = 0; row < this.rows; row++){
 			for(int column = 0; column < columns; column++){
 				Brick.Type brickType = Brick.Type.random();
-				Brick newBrick = brick(x, y, brickType);
+				Brick newBrick = constructBrick(x, y, brickType);
 				playField.addSprite(newBrick);
+				// test stuff to check if game ends when all bricks destroyed except wallBricks
 				if (newBrick instanceof WallBrick == false)
 					bricks.add(newBrick);
 				x += Brick.images.get(brickType).getWidth(null);
@@ -32,7 +32,7 @@ public class BrickStorage {
 		}
 	}
 
-	private Brick brick(int x, int y, Brick.Type type) {
+	private Brick constructBrick(int x, int y, Brick.Type type) {
 		Image image = Brick.images.get(type);
 		Rectangle bounds = brickBounds(x, y, image);
 		return switch (type) {
@@ -57,9 +57,5 @@ public class BrickStorage {
 				result++;
 		}
 		return result;
-	}
-
-	public int brokenCount() {
-		return bricks.size() - unbrokenCount();
 	}
 }

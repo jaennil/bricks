@@ -3,9 +3,9 @@ class Velocity {
 	private double dx, dy;
 	private int speed;
 
-	public Velocity(int direction, int speed) {
+	public Velocity(int angle, int speed) {
 		this.speed = speed;
-		setDirection(direction);
+		setDirection(angle);
 	}
 
 	public void setDirection(int angle) {

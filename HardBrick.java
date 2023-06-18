@@ -17,7 +17,7 @@ public class HardBrick extends Brick {
             ball.getVelocity().reverseY();
 
             if (brickStorage.unbrokenCount() == 0) {
-                playField.getFrame().win();
+//                playField.win();
             }
         }
     }

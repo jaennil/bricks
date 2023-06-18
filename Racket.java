@@ -6,16 +6,17 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-class Racket extends MovableSprite implements KeyListener {
-	static final int LEFT = 37;
-	static final int RIGHT = 39;
-	static final int ALPHA = 10;
+class Racket extends MovableSprite implements Runnable, KeyListener {
+	static final int DELAY = 1;
+	private Thread thread;
+	private boolean leftReleased = true;
+	private boolean rightReleased = true;
 
 	private final static BufferedImage image;
 
 	static {
 		try {
-			image = ImageIO.read(new File("images/racket.gif"));
+			image = ImageIO.read(new File("images/racket.png"));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -33,8 +34,14 @@ class Racket extends MovableSprite implements KeyListener {
 			),
 			0,
 			1);
-		
-		this.playField.addKeyListener(this);
+		playField.getWindow().addKeyListener(this);
+		while(true) {
+			if (playField.getThread().isAlive()) {
+				break;
+			}
+		}
+		thread = new Thread(this, "racket thread");
+		thread.start();
 	}
 
 	public void move() {
@@ -66,21 +73,48 @@ class Racket extends MovableSprite implements KeyListener {
 		}
 	}
 	
-	public void keyPressed(KeyEvent keyEvent) {
-		if (keyEvent.getKeyCode() == LEFT) {
-			startMoving();
-			velocity.setDirection(180);
-		} else if (keyEvent.getKeyCode() == RIGHT) {
-			startMoving();
-			velocity.setDirection(0);
+	public void run() {
+		while (true) {
+//			System.out.println("racket thread running...");
+			move();
+			try {
+				Thread.sleep(DELAY);
+			} catch (InterruptedException e) {
+				throw new RuntimeException(e);
+			}
 		}
 	}
-	
-	public void keyReleased(KeyEvent e) {
-		stopMoving();
-	}
-	
+
+	@Override
 	public void keyTyped(KeyEvent e) {
-		;
+
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		int key = e.getKeyCode();
+		if (key == KeyEvent.VK_LEFT) {
+			leftReleased = false;
+			startMoving();
+			setDirection(180);
+		}
+		if (key == KeyEvent.VK_RIGHT) {
+			rightReleased = false;
+			startMoving();
+			setDirection(0);
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		int key = e.getKeyCode();
+		if (key == KeyEvent.VK_LEFT) {
+			leftReleased = true;
+		}
+		if (key == KeyEvent.VK_RIGHT) {
+			rightReleased = true;
+		}
+		if (leftReleased && rightReleased)
+			stopMoving();
 	}
 }

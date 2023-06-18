@@ -6,14 +6,14 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
-abstract public class Brick extends StationarySprite {
+abstract public class Brick extends Sprite {
 
 	public enum Type {
 		DEFAULT, HARD, POWER, WALL;
 
 		public static Type random() {
 			Type[] types = values();
-			return types[(int)(Math.random() * values().length)];
+			return types[(int)(Math.random() * types.length)];
 		}
 
 	}
@@ -44,7 +44,7 @@ abstract public class Brick extends StationarySprite {
 		ball.getVelocity().reverseY();
 	
 		if (brickStorage.unbrokenCount() == 0) {
-			playField.getFrame().win();
+//			playField.win();
 		}
 	}
 

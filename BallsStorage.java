@@ -1,21 +1,19 @@
-class BallsStorage {
-    private Ball[] balls;
-    private int amount;
+import java.util.ArrayList;
+
+class BallsStorage extends ArrayList<Ball> {
 
     public BallsStorage(PlayField playField, int amount) {
-        balls = new Ball[amount];
-
         for (int i = 0; i < amount; i++)
-            balls[i] = new Ball(playField, this);
-
-        this.amount = amount;
+            add( new Ball(playField, this));
     }
 
-    public int size() {
-        return amount;
-    }
-
-    public Ball get() {
-        return amount > 0 ? balls[--amount] : null;
+    public Ball getFirst() {
+        if (size() > 0) {
+            Ball ball = get(0);
+            ball.startMoving();
+            return ball;
+        } else {
+            return null;
+        }
     }
 }

@@ -4,14 +4,16 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-class Ball extends MovableSprite {
+class Ball extends MovableSprite implements Runnable {
+	private Thread thread;
+	private int delay = 10;
 	private BallsStorage ballsStorage;
 	private PlayField playField;
 	private final static BufferedImage image;
 
 	static {
 		try {
-			image = ImageIO.read(new File("images/ball.gif"));
+			image = ImageIO.read(new File("images/ball.png"));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -22,11 +24,18 @@ class Ball extends MovableSprite {
 			playField,
 			image,
 			(new Rectangle(playField.getWidth()/2, playField.getHeight()/2+50, image.getWidth(playField), image.getHeight(playField))),
-			90,
-			3);
-		isMoving = true;
+				135,
+			1);
+//		isMoving = true;
 		this.ballsStorage = ballsStorage;
 		this.playField = playField;
+		while (true) {
+			if (playField.getThread().isAlive()) {
+				break;
+			}
+		}
+		thread = new Thread(this, "ball thread");
+		thread.start();
 	}
 
 	public void move() {
@@ -37,7 +46,7 @@ class Ball extends MovableSprite {
 
 		prevPos = bounds;
 		bounds.translate((int)Math.round(velocity.getSpeedX()), (int)Math.round(velocity.getSpeedY()));
-    
+
 		if (bounds.x <= playFieldBoundary.x) {
 			bounds.x = playFieldBoundary.x;
 			velocity.reverseX();
@@ -48,28 +57,48 @@ class Ball extends MovableSprite {
 			bounds.y = playFieldBoundary.y;
 			velocity.reverseY();
 		} else if (bounds.y + bounds.height > playFieldBoundary.y + playFieldBoundary.height) {
-			playField.getFrame().setMessage(Integer.toString(ballsStorage.size()));
 			isDead = true;
 			if (ballsStorage.size() == 0) {
-				playField.getFrame().lose();
+//				playField.lose();
 			} else {
-				playField.addSprite(ballsStorage.get());
+				ballsStorage.remove(0);
+//				playField.addSprite(ballsStorage.get());
 			}
 		}
-	
+
 		/* Обработка соударения с другими спрайтами */
 		if (collideWith() != null) {
+			System.out.println("ball collide");
 			bounds = prevPos;
 			collideInto(collideWith());
 		}
 	}
-	
-	/* Реакция на возникновение коллизии. */
+
 	public void collideInto(Sprite sprite) {
 		sprite.hitBy(this);
 	}
-	
+
+	public void run() {
+		while (isDead == false) {
+			move();
+			try {
+				Thread.sleep(delay);
+			} catch (InterruptedException e) {
+				throw new RuntimeException(e);
+			}
+		}
+	}
+
+	public void setDelay(int delay) {
+		this.delay = delay;
+	}
+
+	public int getDelay() {
+		return delay;
+	}
+
+	@Override
 	public void hitBy(Ball ball) {
-		;
+
 	}
 }
