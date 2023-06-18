@@ -1,5 +1,6 @@
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.util.ArrayList;
 
 abstract class MovableSprite extends Sprite {
 
@@ -29,7 +30,7 @@ abstract class MovableSprite extends Sprite {
 	}
 
 	/* Вернуть спрайт с которым произошло соударение */
-	public Sprite collideWith() {
+	public ArrayList<Sprite> collideWith() {
 		return playField.testCollision(this);
 	}
 

@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 class PlayField extends JPanel implements Runnable {
 	private Window window;
@@ -9,6 +10,7 @@ class PlayField extends JPanel implements Runnable {
 	private BrickStorage brickStorage;
 	private BallsStorage ballsStorage;
 	private Racket racket;
+	public Ball ball;
 	private static final int HEIGHT = 700;
 	private static final int WIDTH = 700;
 	private static final Rectangle BOUNDS = new Rectangle(0, 0, WIDTH, HEIGHT);
@@ -23,7 +25,7 @@ class PlayField extends JPanel implements Runnable {
 		brickStorage = new BrickStorage(this);
 		racket = new Racket(this);
 		ballsStorage = new BallsStorage(this, 2);
-
+		ball = ballsStorage.getFirst();
 	}
 
 	public void run() {
@@ -43,7 +45,6 @@ class PlayField extends JPanel implements Runnable {
 		graphics.clearRect(0, 0, WIDTH, HEIGHT);
 		sprites.draw(graphics);
 		racket.draw(graphics);
-//		Ball aliveBall = ballsStorage.getFirst();
 		if (ballsStorage.size() == 0) {
 			lose(graphics);
 			return;
@@ -52,7 +53,7 @@ class PlayField extends JPanel implements Runnable {
 			win(graphics);
 			return;
 		}
-		ballsStorage.getFirst().draw(graphics);
+		ball.draw(graphics);
 		graphics.drawString("balls: " + ballsStorage.size(), 50, 50);
 	}
 
@@ -70,15 +71,12 @@ class PlayField extends JPanel implements Runnable {
 		graphics.drawString("you win", WIDTH/2, HEIGHT/2);
 	}
 
-	public Sprite testCollision(Sprite inputSprite) {
-		// найти спрайт с которым произошла коллизия. есть не произошла то null
-		Sprite sprite = sprites.testCollision(inputSprite);
-		if (sprite == null) {
-			if (racket.testCollision(inputSprite))
-				return racket;
-			return null;
-		}
-		return sprite;
+	public ArrayList<Sprite> testCollision(Sprite inputSprite) {
+		// найти спрайтs с которым произошла коллизия. есть не произошла то null
+		ArrayList<Sprite> spriteCollisions = sprites.testCollision(inputSprite);
+		if (racket.testCollision(inputSprite))
+			spriteCollisions.add(racket);
+		return spriteCollisions;
 	}
 
 	public Rectangle getBoundary() {

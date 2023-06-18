@@ -10,15 +10,16 @@ class SpritesArray extends ArrayList<Sprite> {
 		}
 	}
 	
-	public Sprite testCollision(Sprite inputSprite) {
+	public ArrayList<Sprite> testCollision(Sprite inputSprite) {
+		ArrayList<Sprite> result = new ArrayList<>();
 		for (Sprite sprite : this) {
 			if (inputSprite == sprite)
 				continue;
 
 			if (inputSprite.testCollision(sprite))
-				return sprite;
+				result.add(sprite);
 		}
-		return null;
+		return result;
 	}
 	
 	public void update() {

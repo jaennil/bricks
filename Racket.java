@@ -7,7 +7,7 @@ import java.io.File;
 import java.io.IOException;
 
 class Racket extends MovableSprite implements Runnable, KeyListener {
-	static final int DELAY = 1;
+	static final int DELAY = 4;
 	private Thread thread;
 	private boolean leftReleased = true;
 	private boolean rightReleased = true;
@@ -45,33 +45,48 @@ class Racket extends MovableSprite implements Runnable, KeyListener {
 	}
 
 	public void move() {
-		if (isMoving) {
-			Rectangle b = playField.getBoundary();
-			bounds.x += velocity.getSpeedX();
-			
-			if (bounds.x < b.x)
-				bounds.x = b.x;
-			else if (bounds.x + bounds.width > b.x + b.width)
-				bounds.x = b.x + b.width - bounds.width;
-		}
+		if (isMoving == false)
+			return;
+		Rectangle b = playField.getBoundary();
+		bounds.x += velocity.getSpeedX();
+
+		if (bounds.x < b.x)
+			bounds.x = b.x;
+		else if (bounds.x + bounds.width > b.x + b.width)
+			bounds.x = b.x + b.width - bounds.width;
 	}
+
+//	public void hitBy(Ball ball) {
+//		if ( ball.getDirection() == 90 ) {
+//			ball.setDirection(70);
+//		} else {
+//			int px = ball.getBounds().x + ball.getBounds().width/2;
+//			int l  = (int) (bounds.x + bounds.width*(1.0/3));
+//			int r  = (int) (bounds.x + bounds.width*(2.0/3));
+//
+//			if ( px < l || px > r ) {
+//				ball.getVelocity().reverse();
+//			} else {
+//				ball.getVelocity().reverseY();
+//			}
+//		}
+//	}
 
 	public void hitBy(Ball ball) {
-		if ( ball.getDirection() == 90 ) {
-			ball.setDirection(70);
-		} else {
-			int px = ball.getBounds().x + ball.getBounds().width/2;
-			int l  = (int) (bounds.x + bounds.width*(1.0/3));
-			int r  = (int) (bounds.x + bounds.width*(2.0/3));
-
-			if ( px < l || px > r ) {
-				ball.getVelocity().reverse();
-			} else {
-				ball.getVelocity().reverseY();
-			}
-		}
+		Rectangle ballBounds = ball.getBounds();
+		Rectangle racketBounds = getBounds();
+		int value = racketBounds.x + racketBounds.width - ballBounds.x + ballBounds.width/2;
+		System.out.println(value);
+		int angle = mapAngle(value);
+		System.out.println(angle);
+		ball.setDirection(angle);
 	}
-	
+
+	public static int mapAngle(int input) {
+		int output = (int) (input * 0.9) + 45;
+		return output;
+	}
+
 	public void run() {
 		while (true) {
 			move();

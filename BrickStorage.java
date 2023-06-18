@@ -5,8 +5,8 @@ import java.util.ArrayList;
 public class BrickStorage extends ArrayList<Brick> {
 
 	private final PlayField playField;
-	private final int rows = 2;
-	private final int columns = 2;
+	private final int rows = 5;
+	private final int columns = 5;
 
 	public BrickStorage(PlayField playField){
 		this.playField = playField;
@@ -36,6 +36,9 @@ public class BrickStorage extends ArrayList<Brick> {
 			case HARD -> new HardBrick(this.playField, this, bounds);
 			case POWER -> new PowerBrick(this.playField, this, bounds);
 			case WALL -> new WallBrick(this.playField, this, bounds);
+			case STICKY -> new StickyBrick(this.playField, this, bounds);
+			case ARMOR -> new ArmorBrick(this.playField, this, bounds);
+			case TRAP -> new TrapBrick(this.playField, this, bounds);
 		};
 	}
 
@@ -49,7 +52,7 @@ public class BrickStorage extends ArrayList<Brick> {
 		int amount = 0;
 		for (Brick brick : this) {
 			if (brick.isDead() == false) {
-				if (brick instanceof WallBrick == false)
+				if (!(brick instanceof WallBrick) && !(brick instanceof StickyBrick))
 					amount++;
 			}
 		}

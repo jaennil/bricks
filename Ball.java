@@ -3,17 +3,24 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 class Ball extends MovableSprite implements Runnable {
+	public enum Type {
+		DEFAULT, STICKY;
+	}
 	private Thread thread;
-	private int delay = 5;
+	private int delay = 8;
 	private final BallsStorage ballsStorage;
 	private final PlayField playField;
-	private final static BufferedImage image;
+	public static HashMap<Type, BufferedImage> images;
 
 	static {
+		images = new HashMap<>();
 		try {
-			image = ImageIO.read(new File("images/ball.png"));
+			images.put(Type.DEFAULT, ImageIO.read(new File("images/ball/default.png")));
+			images.put(Type.STICKY, ImageIO.read(new File("images/ball/sticky.png")));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
@@ -22,10 +29,10 @@ class Ball extends MovableSprite implements Runnable {
 	public Ball(PlayField playField, BallsStorage ballsStorage) {
 		super(
 			playField,
-			image,
-			(new Rectangle(playField.getWidth()/2, playField.getHeight()/2+50, image.getWidth(playField), image.getHeight(playField))),
-				200,
-			3);
+			images.get(Type.DEFAULT),
+			(new Rectangle(playField.getWidth()/2, playField.getHeight()/2+250, images.get(Type.DEFAULT).getWidth(playField), images.get(Type.DEFAULT).getHeight(playField))),
+				70,
+			2);
 		this.ballsStorage = ballsStorage;
 		this.playField = playField;
 		while (true) {
@@ -57,13 +64,13 @@ class Ball extends MovableSprite implements Runnable {
 			velocity.reverseY();
 		} else if (bounds.y + bounds.height > playFieldBoundary.y + playFieldBoundary.height) {
 			isDead = true;
-			ballsStorage.remove(0);
 		}
 
-		Sprite collisionWith = collideWith();
-		if (collisionWith != null) {
+		ArrayList<Sprite> collisionWith = collideWith();
+		if (collisionWith.size() != 0) {
 			bounds = prevPos;
-			collisionWith.hitBy(this);
+			for (Sprite sprite : collisionWith)
+				sprite.hitBy(this);
 		}
 	}
 
@@ -76,6 +83,8 @@ class Ball extends MovableSprite implements Runnable {
 				throw new RuntimeException(e);
 			}
 		}
+		ballsStorage.remove(this);
+		playField.ball = ballsStorage.getFirst();
 	}
 
 	public void setDelay(int delay) {

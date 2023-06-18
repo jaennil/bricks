@@ -34,6 +34,10 @@ abstract class Sprite {
 		return isDead;
 	}
 
+	public void setImage(Image image) {
+		this.image = image;
+	}
+
 	abstract public void update();
 	abstract public void hitBy(Ball ball);
 }
