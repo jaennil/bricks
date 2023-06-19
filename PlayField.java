@@ -13,7 +13,7 @@ class PlayField extends JPanel implements Runnable {
 	private BrickStorage brickStorage;
 	private BallsStorage ballsStorage;
 	private Racket racket;
-	public Ball ball;
+	private Ball ball;
 	private boolean running = false;
 
 	public PlayField(Window window) {
@@ -35,11 +35,6 @@ class PlayField extends JPanel implements Runnable {
 		while (running) {
 			sprites.update();
 			repaint();
-			try {
-				Thread.sleep(0);
-			} catch (InterruptedException e) {
-				throw new RuntimeException(e);
-			}
 		}
 	}
 
@@ -59,6 +54,7 @@ class PlayField extends JPanel implements Runnable {
 			return;
 		}
 		ball.draw(graphics);
+		graphics.setFont(new Font("TimesRoman", Font.BOLD, 15));
 		graphics.drawString("balls: " + ballsStorage.size(), 50, 50);
 	}
 
@@ -107,5 +103,9 @@ class PlayField extends JPanel implements Runnable {
 
 	public Thread getThread() {
 		return thread;
+	}
+
+	public void setBall(Ball ball) {
+		this.ball = ball;
 	}
 }

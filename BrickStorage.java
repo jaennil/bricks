@@ -51,7 +51,8 @@ public class BrickStorage extends ArrayList<Brick> {
 	public int aliveAmount() {
 		int amount = 0;
 		for (Brick brick : this) {
-			if (brick.isDead() == false) {
+			if (!brick.isDead()) {
+				// because they always alive
 				if (!(brick instanceof WallBrick) && !(brick instanceof StickyBrick))
 					amount++;
 			}

@@ -5,9 +5,17 @@ import java.awt.event.ActionListener;
 class Window extends JFrame {
 
 	public Window() {
-		PlayField playField = new PlayField(this);
 		setTitle("Bricks");
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		PlayField playField = new PlayField(this);
+		createMenuBar(playField);
+		add(playField);
+		setSize(800, 800);
+		setVisible(true);
+		playField.restart();
+	}
+
+	public void createMenuBar(PlayField playField) {
 		JMenuBar menuBar = new JMenuBar();
 		JMenu menu = new JMenu("menu");
 		JMenuItem restart = new JMenuItem("restart");
@@ -20,9 +28,5 @@ class Window extends JFrame {
 		});
 		menuBar.add(menu);
 		setJMenuBar(menuBar);
-		add(playField);
-		setSize(800, 800);
-		setVisible(true);
-		playField.restart();
 	}
 }

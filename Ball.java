@@ -1,5 +1,4 @@
 import javax.imageio.ImageIO;
-import javax.sound.sampled.*;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -61,7 +60,10 @@ class Ball extends MovableSprite implements Runnable {
 		} else if (bounds.y + bounds.height > playFieldBoundary.y + playFieldBoundary.height) {
 			isDead = true;
 		}
+		handleCollisions();
+	}
 
+	private void handleCollisions() {
 		ArrayList<Sprite> collisionWith = collideWith();
 		if (collisionWith.size() != 0) {
 			bounds = prevPos;
@@ -69,12 +71,11 @@ class Ball extends MovableSprite implements Runnable {
 				sprite.hitBy(this);
 		}
 	}
-
 	public void run() {
 		while (!playField.getThread().isAlive()) {
 			;
 		}
-		while (isDead == false) {
+		while (!isDead) {
 			move();
 			try {
 				Thread.sleep(delay);
@@ -84,7 +85,7 @@ class Ball extends MovableSprite implements Runnable {
 		}
 		PlayField.playSound("audio/death.wav");
 		ballsStorage.remove(this);
-		playField.ball = ballsStorage.getFirst();
+		playField.setBall(ballsStorage.getFirst());
 	}
 	public void setDelay(int delay) {
 		this.delay = delay;

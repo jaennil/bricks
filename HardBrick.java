@@ -10,16 +10,11 @@ public class HardBrick extends Brick {
     @Override
     public void hitBy(Ball ball) {
         super.hitBy(ball);
-        isDead = false;
         health--;
         if (health == 0)
             isDead = true;
         else {
             super.image = images.get(Type.DEFAULT);
         }
-    }
-
-    public void update() {
-        ;
     }
 }

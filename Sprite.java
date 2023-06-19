@@ -29,6 +29,10 @@ abstract class Sprite {
 	public Rectangle getBounds() {
 		return bounds;
 	}
+
+	public void setDead() {
+		isDead = true;
+	}
 	
 	public boolean isDead() {
 		return isDead;

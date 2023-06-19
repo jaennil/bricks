@@ -44,26 +44,26 @@ abstract public class Brick extends Sprite {
 	}
 
 	public void hitBy(Ball ball) {
-		isDead = true;
+		// by default, it acts like wall brick to prevent a lot of duplicated code
 		Rectangle ballBounds = ball.getBounds();
 		Rectangle brickBounds = this.getBounds();
 		Rectangle brickLeft = new Rectangle(brickBounds.x, brickBounds.y, 1, brickBounds.height);
 		Rectangle brickTop = new Rectangle(brickBounds.x, brickBounds.y, brickBounds.width, 1);
 		Rectangle brickRight = new Rectangle(brickBounds.x+brickBounds.width-1, brickBounds.y, 1, brickBounds.height);
 		Rectangle brickBottom = new Rectangle(brickBounds.x, brickBounds.y+brickBounds.height-1, brickBounds.width, 1);
-		Rectangle2D intersection = ballBounds.createIntersection(brickBounds);
-		Rectangle intersectionRect = intersection.getBounds();
-		if (intersectionRect.intersects(brickLeft) && intersectionRect.intersects(brickTop))
+		Rectangle2D collisionIntersection2D = ballBounds.createIntersection(brickBounds);
+		Rectangle collisionIntersection = collisionIntersection2D.getBounds();
+		if (collisionIntersection.intersects(brickLeft) && collisionIntersection.intersects(brickTop))
 			ball.setDirection(90+45);
-		else if (intersectionRect.intersects(brickTop) && intersectionRect.intersects(brickRight))
+		else if (collisionIntersection.intersects(brickTop) && collisionIntersection.intersects(brickRight))
 			ball.setDirection(45);
-		else if (intersectionRect.intersects(brickRight) && intersectionRect.intersects(brickBottom))
+		else if (collisionIntersection.intersects(brickRight) && collisionIntersection.intersects(brickBottom))
 			ball.setDirection(270+45);
-		else if (intersectionRect.intersects(brickBottom) && intersectionRect.intersects(brickLeft))
+		else if (collisionIntersection.intersects(brickBottom) && collisionIntersection.intersects(brickLeft))
 			ball.setDirection(180 + 45);
-		else if (intersectionRect.intersects(brickLeft) || intersectionRect.intersects(brickRight))
+		else if (collisionIntersection.intersects(brickLeft) || collisionIntersection.intersects(brickRight))
 			ball.getVelocity().reverseX();
-		else if (intersectionRect.intersects(brickTop) || intersectionRect.intersects(brickBottom))
+		else if (collisionIntersection.intersects(brickTop) || collisionIntersection.intersects(brickBottom))
 			ball.getVelocity().reverseY();
 	}
 
