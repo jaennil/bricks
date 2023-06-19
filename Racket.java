@@ -1,16 +1,19 @@
 import javax.imageio.ImageIO;
 import java.awt.Rectangle;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-class Racket extends MovableSprite implements Runnable, KeyListener {
+class Racket extends MovableSprite implements Runnable, KeyListener, MouseListener, MouseMotionListener {
 	static final int DELAY = 4;
 	private Thread thread;
 	private boolean leftReleased = true;
 	private boolean rightReleased = true;
+	private boolean dragging = false;
+	private int xToDrag = -1;
+	private int lastX = -1;
+	private boolean mouseReleased = true;
 
 	private final static BufferedImage image;
 
@@ -35,6 +38,8 @@ class Racket extends MovableSprite implements Runnable, KeyListener {
 			0,
 			1);
 		playField.getWindow().addKeyListener(this);
+		playField.addMouseMotionListener(this);
+		playField.addMouseListener(this);
 		while(true) {
 			if (playField.getThread().isAlive()) {
 				break;
@@ -56,40 +61,30 @@ class Racket extends MovableSprite implements Runnable, KeyListener {
 			bounds.x = b.x + b.width - bounds.width;
 	}
 
-//	public void hitBy(Ball ball) {
-//		if ( ball.getDirection() == 90 ) {
-//			ball.setDirection(70);
-//		} else {
-//			int px = ball.getBounds().x + ball.getBounds().width/2;
-//			int l  = (int) (bounds.x + bounds.width*(1.0/3));
-//			int r  = (int) (bounds.x + bounds.width*(2.0/3));
-//
-//			if ( px < l || px > r ) {
-//				ball.getVelocity().reverse();
-//			} else {
-//				ball.getVelocity().reverseY();
-//			}
-//		}
-//	}
-
 	public void hitBy(Ball ball) {
 		Rectangle ballBounds = ball.getBounds();
 		Rectangle racketBounds = getBounds();
-		int value = racketBounds.x + racketBounds.width - ballBounds.x + ballBounds.width/2;
-		System.out.println(value);
-		int angle = mapAngle(value);
-		System.out.println(angle);
+		int factor = racketBounds.x + racketBounds.width - ballBounds.x - ballBounds.width;
+		int angle = mapAngle(factor);
 		ball.setDirection(angle);
 	}
 
 	public static int mapAngle(int input) {
-		int output = (int) (input * 0.9) + 45;
-		return output;
+		return (int) (input * 0.9) + 45;
 	}
 
 	public void run() {
 		while (true) {
 			move();
+			Rectangle racketBounds = getBounds();
+			if (xToDrag-3 <= racketBounds.getCenterX() && racketBounds.getCenterX() <= xToDrag+3) {
+				stopMoving();
+			}
+			if (racketBounds.getCenterX() > xToDrag) {
+				setDirection(180);
+			} else {
+				setDirection(0);
+			}
 			try {
 				Thread.sleep(DELAY);
 			} catch (InterruptedException e) {
@@ -129,5 +124,43 @@ class Racket extends MovableSprite implements Runnable, KeyListener {
 		}
 		if (leftReleased && rightReleased)
 			stopMoving();
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		xToDrag = e.getX();
+		lastX = xToDrag;
+		startMoving();
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		mouseReleased = false;
+		xToDrag = e.getX();
+		startMoving();
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		mouseReleased = true;
+		stopMoving();
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+
 	}
 }

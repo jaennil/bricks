@@ -31,7 +31,7 @@ class Ball extends MovableSprite implements Runnable {
 			playField,
 			images.get(Type.DEFAULT),
 			(new Rectangle(playField.getWidth()/2, playField.getHeight()/2+250, images.get(Type.DEFAULT).getWidth(playField), images.get(Type.DEFAULT).getHeight(playField))),
-				70,
+				270,
 			2);
 		this.ballsStorage = ballsStorage;
 		this.playField = playField;

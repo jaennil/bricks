@@ -9,16 +9,13 @@ public class HardBrick extends Brick {
 
     @Override
     public void hitBy(Ball ball) {
+        super.hitBy(ball);
+        isDead = false;
         health--;
         if (health == 0)
-            super.hitBy(ball);
+            isDead = true;
         else {
             super.image = images.get(Type.DEFAULT);
-            ball.getVelocity().reverseY();
-
-            if (brickStorage.aliveAmount() == 0) {
-//                playField.win();
-            }
         }
     }
 
