@@ -63,12 +63,14 @@ class PlayField extends JPanel implements Runnable {
 
 	public void lose(Graphics graphics) {
 		running = false;
-		graphics.drawString("you lost", WIDTH/2, HEIGHT/2);
+		graphics.setFont(new Font("TimesRoman", Font.BOLD, 40));
+		graphics.drawString("YOU LOST!", WIDTH/2-100, HEIGHT/2);
 	}
 
 	public void win(Graphics graphics) {
 		running = false;
-		graphics.drawString("you win", WIDTH/2, HEIGHT/2);
+		graphics.setFont(new Font("TimesRoman", Font.BOLD, 40));
+		graphics.drawString("YOU WIN!", WIDTH/2-100, HEIGHT/2);
 	}
 
 	public ArrayList<Sprite> testCollision(Sprite inputSprite) {
