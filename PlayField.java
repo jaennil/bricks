@@ -21,17 +21,17 @@ class PlayField extends JPanel implements Runnable {
 	}
 
 	public void restart() {
-		running = true;
-		sprites = new SpritesArray();
 		thread = new Thread(this);
-		thread.start();
+		sprites = new SpritesArray();
 		brickStorage = new BrickStorage(this);
 		racket = new Racket(this);
 		ballsStorage = new BallsStorage(this, 2);
 		ball = ballsStorage.getFirst();
+		thread.start();
 	}
 
 	public void run() {
+		running = true;
 		while (running) {
 			sprites.update();
 			repaint();

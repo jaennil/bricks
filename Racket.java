@@ -37,11 +37,6 @@ class Racket extends MovableSprite implements Runnable, KeyListener, MouseListen
 		playField.getWindow().addKeyListener(this);
 		playField.addMouseMotionListener(this);
 		playField.addMouseListener(this);
-		while(true) {
-			if (playField.getThread().isAlive()) {
-				break;
-			}
-		}
 		thread = new Thread(this, "racket thread");
 		thread.start();
 	}
@@ -71,6 +66,10 @@ class Racket extends MovableSprite implements Runnable, KeyListener, MouseListen
 	}
 
 	public void run() {
+		while(!playField.getThread().isAlive()) {
+			// do nothing
+			;
+		}
 		while (true) {
 			move();
 			Rectangle racketBounds = getBounds();

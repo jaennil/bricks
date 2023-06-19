@@ -36,11 +36,6 @@ class Ball extends MovableSprite implements Runnable {
 			3);
 		this.ballsStorage = ballsStorage;
 		this.playField = playField;
-		while (true) {
-			if (playField.getThread().isAlive()) {
-				break;
-			}
-		}
 		thread = new Thread(this, "ball thread");
 		thread.start();
 	}
@@ -76,6 +71,9 @@ class Ball extends MovableSprite implements Runnable {
 	}
 
 	public void run() {
+		while (!playField.getThread().isAlive()) {
+			;
+		}
 		while (isDead == false) {
 			move();
 			try {

@@ -23,6 +23,6 @@ class Window extends JFrame {
 		add(playField);
 		setSize(800, 800);
 		setVisible(true);
-//		playField.restart();
+		playField.restart();
 	}
 }
