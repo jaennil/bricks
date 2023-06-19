@@ -1,5 +1,9 @@
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.util.ArrayList;
 
 class PlayField extends JPanel implements Runnable {
@@ -43,7 +47,6 @@ class PlayField extends JPanel implements Runnable {
 	public void paintComponent(Graphics graphics) {
 		if (!running)
 			return;
-//		graphics.clearRect(0, 0, WIDTH, HEIGHT);
 		graphics.clearRect(0, 0, getWidth(), getHeight());
 		sprites.draw(graphics);
 		racket.draw(graphics);
@@ -57,6 +60,17 @@ class PlayField extends JPanel implements Runnable {
 		}
 		ball.draw(graphics);
 		graphics.drawString("balls: " + ballsStorage.size(), 50, 50);
+	}
+
+	public static void playSound(final String url) {
+		try {
+			Clip clip = AudioSystem.getClip();
+			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(url).getAbsoluteFile());
+			clip.open(audioInputStream);
+			clip.start();
+		} catch (Exception e) {
+			System.err.println(e.getMessage());
+		}
 	}
 
 	public void addSprite(Sprite sprite) {
