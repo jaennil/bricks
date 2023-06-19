@@ -14,8 +14,6 @@ class PlayField extends JPanel implements Runnable {
 
 	public PlayField(Window window) {
 		this.window = window;
-//		setLocation(50, 50);
-//		setSize(WIDTH, HEIGHT);
 	}
 
 	public void restart() {

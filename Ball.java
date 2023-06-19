@@ -1,4 +1,5 @@
 import javax.imageio.ImageIO;
+import javax.sound.sampled.*;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -30,7 +31,7 @@ class Ball extends MovableSprite implements Runnable {
 		super(
 			playField,
 			images.get(Type.DEFAULT),
-			(new Rectangle(playField.getWidth()/2, playField.getHeight()/2+100, images.get(Type.DEFAULT).getWidth(playField), images.get(Type.DEFAULT).getHeight(playField))),
+			(new Rectangle(playField.getWidth()/2-images.get(Type.DEFAULT).getWidth()/2, playField.getHeight()/2+100, images.get(Type.DEFAULT).getWidth(), images.get(Type.DEFAULT).getHeight())),
 				270,
 			3);
 		this.ballsStorage = ballsStorage;
@@ -83,10 +84,25 @@ class Ball extends MovableSprite implements Runnable {
 				throw new RuntimeException(e);
 			}
 		}
+		playSound("audio/death.wav");
 		ballsStorage.remove(this);
 		playField.ball = ballsStorage.getFirst();
 	}
-
+//	public static synchronized void playSound(final String url) {
+	public static void playSound(final String url) {
+//		new Thread(new Runnable() { // the wrapper thread is unnecessary, unless it blocks on the Clip finishing, see comments
+//			public void run() {
+				try {
+					Clip clip = AudioSystem.getClip();
+					AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(url).getAbsoluteFile());
+					clip.open(audioInputStream);
+					clip.start();
+				} catch (Exception e) {
+					System.err.println(e.getMessage());
+				}
+//			}
+//		}).start();
+	}
 	public void setDelay(int delay) {
 		this.delay = delay;
 	}

@@ -27,7 +27,7 @@ class Racket extends MovableSprite implements Runnable, KeyListener, MouseListen
 			playField,
 			image,
 			new Rectangle(
-			playField.getWidth() / 2,
+			playField.getWidth() / 2 - image.getWidth()/2,
 			playField.getHeight() - 20,
 			image.getWidth(playField),
 			image.getHeight(playField)
