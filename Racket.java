@@ -74,12 +74,12 @@ class Racket extends MovableSprite implements Runnable, KeyListener, MouseListen
 		while (true) {
 			move();
 			Rectangle racketBounds = getBounds();
-			if (xToDrag-3 <= racketBounds.getCenterX() && racketBounds.getCenterX() <= xToDrag+3) {
+			if (xToDrag-3 <= racketBounds.getCenterX() && racketBounds.getCenterX() <= xToDrag+3 && leftReleased && rightReleased) {
 				stopMoving();
 			}
-			if (racketBounds.getCenterX() > xToDrag) {
+			if (racketBounds.getCenterX() > xToDrag && leftReleased && rightReleased) {
 				setDirection(180);
-			} else {
+			} else if (racketBounds.getCenterX() <= xToDrag && leftReleased && rightReleased){
 				setDirection(0);
 			}
 			try {
@@ -100,13 +100,13 @@ class Racket extends MovableSprite implements Runnable, KeyListener, MouseListen
 		int key = e.getKeyCode();
 		if (key == KeyEvent.VK_LEFT) {
 			leftReleased = false;
-			startMoving();
 			setDirection(180);
+			startMoving();
 		}
 		if (key == KeyEvent.VK_RIGHT) {
 			rightReleased = false;
-			startMoving();
 			setDirection(0);
+			startMoving();
 		}
 	}
 

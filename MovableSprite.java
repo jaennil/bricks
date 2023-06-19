@@ -18,10 +18,6 @@ abstract class MovableSprite extends Sprite {
 		velocity.setDirection(dir);
 	}
 
-	public int getDirection() {
-		return velocity.getDirection();
-	}
-
 	public Velocity getVelocity() {
 		return velocity;
 	}

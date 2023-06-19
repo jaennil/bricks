@@ -1,5 +1,3 @@
-import org.w3c.dom.css.Rect;
-
 import javax.imageio.ImageIO;
 import java.awt.Image;
 import java.awt.Rectangle;
