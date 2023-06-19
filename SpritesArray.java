@@ -1,6 +1,7 @@
 import java.awt.Graphics;
 import java.util.ArrayList;
 
+// #TODO: maybe rename this into bricksArray or even move its functionality into bricksStorage because its contains only bricks
 class SpritesArray extends ArrayList<Sprite> {
 	public void draw(Graphics graphics) {
 		// cant replace with foreach because of ConcurrentModificationException

@@ -27,6 +27,7 @@ class Ball extends MovableSprite implements Runnable {
 	}
 
 	public Ball(PlayField playField, BallsStorage ballsStorage) {
+		// #TODO: somehow fix that small angles dont work at low speed
 		super(
 			playField,
 			images.get(Type.DEFAULT),

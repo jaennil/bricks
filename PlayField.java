@@ -40,6 +40,7 @@ class PlayField extends JPanel implements Runnable {
 
 	@Override
 	public void paintComponent(Graphics graphics) {
+		// maybe this if statement doesn't work somehow
 		if (!running)
 			return;
 		graphics.clearRect(0, 0, getWidth(), getHeight());

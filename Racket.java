@@ -42,6 +42,7 @@ class Racket extends MovableSprite implements Runnable, KeyListener, MouseListen
 	}
 
 	public void move() {
+		// #TODO: better naming
 		if (!isMoving)
 			return;
 		Rectangle b = playField.getBoundary();
@@ -90,11 +91,6 @@ class Racket extends MovableSprite implements Runnable, KeyListener, MouseListen
 	}
 
 	@Override
-	public void keyTyped(KeyEvent e) {
-
-	}
-
-	@Override
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
 		if (key == KeyEvent.VK_LEFT) {
@@ -137,6 +133,11 @@ class Racket extends MovableSprite implements Runnable, KeyListener, MouseListen
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		stopMoving();
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+
 	}
 
 	@Override

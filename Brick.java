@@ -45,6 +45,7 @@ abstract public class Brick extends Sprite {
 
 	public void hitBy(Ball ball) {
 		// by default, it acts like wall brick to prevent a lot of duplicated code
+		// #TODO maybe create separate function for getting collision side
 		Rectangle ballBounds = ball.getBounds();
 		Rectangle brickBounds = this.getBounds();
 		Rectangle brickLeft = new Rectangle(brickBounds.x, brickBounds.y, 1, brickBounds.height);

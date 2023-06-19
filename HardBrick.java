@@ -12,7 +12,7 @@ public class HardBrick extends Brick {
         super.hitBy(ball);
         health--;
         if (health == 0)
-            isDead = true;
+            setDead();
         else {
             super.image = images.get(Type.DEFAULT);
         }

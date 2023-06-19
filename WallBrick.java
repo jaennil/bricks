@@ -1,5 +1,4 @@
 import java.awt.Rectangle;
-import java.awt.geom.Rectangle2D;
 
 public class WallBrick extends Brick {
 
