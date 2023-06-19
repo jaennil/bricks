@@ -10,10 +10,7 @@ class Racket extends MovableSprite implements Runnable, KeyListener, MouseListen
 	private Thread thread;
 	private boolean leftReleased = true;
 	private boolean rightReleased = true;
-	private boolean dragging = false;
 	private int xToDrag = -1;
-	private int lastX = -1;
-	private boolean mouseReleased = true;
 
 	private final static BufferedImage image;
 
@@ -129,38 +126,29 @@ class Racket extends MovableSprite implements Runnable, KeyListener, MouseListen
 	@Override
 	public void mouseDragged(MouseEvent e) {
 		xToDrag = e.getX();
-		lastX = xToDrag;
 		startMoving();
 	}
 
 	@Override
-	public void mouseMoved(MouseEvent e) {
-	}
+	public void mouseMoved(MouseEvent e) {}
 
 	@Override
-	public void mouseClicked(MouseEvent e) {
-	}
+	public void mouseClicked(MouseEvent e) {}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		mouseReleased = false;
 		xToDrag = e.getX();
 		startMoving();
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		mouseReleased = true;
 		stopMoving();
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent e) {
-
-	}
+	public void mouseEntered(MouseEvent e) {}
 
 	@Override
-	public void mouseExited(MouseEvent e) {
-
-	}
+	public void mouseExited(MouseEvent e) {}
 }

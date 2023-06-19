@@ -2,6 +2,7 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 
+// #TODO make every movable sprite have its own thread that moving it.
 abstract class MovableSprite extends Sprite {
 
 	protected boolean isMoving = false;
@@ -25,11 +26,6 @@ abstract class MovableSprite extends Sprite {
 		return velocity;
 	}
 
-	public void setVelocity(Velocity velocity) {
-		this.velocity = velocity;
-	}
-
-	/* Вернуть спрайт с которым произошло соударение */
 	public ArrayList<Sprite> collideWith() {
 		return playField.testCollision(this);
 	}
