@@ -3,22 +3,23 @@ import java.awt.*;
 import java.util.ArrayList;
 
 class PlayField extends JPanel implements Runnable {
-	private Window window;
+	private final Window window;
 	private Thread thread;
-	private int DELAY = 0;
 	private SpritesArray sprites;
 	private BrickStorage brickStorage;
 	private BallsStorage ballsStorage;
 	private Racket racket;
 	public Ball ball;
-	private static final int HEIGHT = 700;
-	private static final int WIDTH = 700;
-	private static final Rectangle BOUNDS = new Rectangle(0, 0, WIDTH, HEIGHT);
-	private boolean running = true;
+	private boolean running = false;
 
 	public PlayField(Window window) {
 		this.window = window;
-		setSize(WIDTH, HEIGHT);
+//		setLocation(50, 50);
+//		setSize(WIDTH, HEIGHT);
+	}
+
+	public void restart() {
+		running = true;
 		sprites = new SpritesArray();
 		thread = new Thread(this);
 		thread.start();
@@ -33,7 +34,7 @@ class PlayField extends JPanel implements Runnable {
 			sprites.update();
 			repaint();
 			try {
-				Thread.sleep(DELAY);
+				Thread.sleep(0);
 			} catch (InterruptedException e) {
 				throw new RuntimeException(e);
 			}
@@ -42,7 +43,10 @@ class PlayField extends JPanel implements Runnable {
 
 	@Override
 	public void paintComponent(Graphics graphics) {
-		graphics.clearRect(0, 0, WIDTH, HEIGHT);
+		if (!running)
+			return;
+//		graphics.clearRect(0, 0, WIDTH, HEIGHT);
+		graphics.clearRect(0, 0, getWidth(), getHeight());
 		sprites.draw(graphics);
 		racket.draw(graphics);
 		if (ballsStorage.size() == 0) {
@@ -64,13 +68,13 @@ class PlayField extends JPanel implements Runnable {
 	public void lose(Graphics graphics) {
 		running = false;
 		graphics.setFont(new Font("TimesRoman", Font.BOLD, 40));
-		graphics.drawString("YOU LOST!", WIDTH/2-100, HEIGHT/2);
+		graphics.drawString("YOU LOST!", getWidth()/2-100, getHeight()/2);
 	}
 
 	public void win(Graphics graphics) {
 		running = false;
 		graphics.setFont(new Font("TimesRoman", Font.BOLD, 40));
-		graphics.drawString("YOU WIN!", WIDTH/2-100, HEIGHT/2);
+		graphics.drawString("YOU WIN!", getWidth()/2-100, getHeight()/2);
 	}
 
 	public ArrayList<Sprite> testCollision(Sprite inputSprite) {
@@ -82,7 +86,7 @@ class PlayField extends JPanel implements Runnable {
 	}
 
 	public Rectangle getBoundary() {
-		return BOUNDS;
+		return new Rectangle(getX(), getY(), getWidth(), getHeight());
 	}
 
 	public Window getWindow() {
