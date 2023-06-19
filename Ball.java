@@ -11,7 +11,7 @@ class Ball extends MovableSprite implements Runnable {
 		DEFAULT, STICKY;
 	}
 	private Thread thread;
-	private int delay = 8;
+	private int delay = 12;
 	private final BallsStorage ballsStorage;
 	private final PlayField playField;
 	public static HashMap<Type, BufferedImage> images;
@@ -30,9 +30,9 @@ class Ball extends MovableSprite implements Runnable {
 		super(
 			playField,
 			images.get(Type.DEFAULT),
-			(new Rectangle(playField.getWidth()/2, playField.getHeight()/2+200, images.get(Type.DEFAULT).getWidth(playField), images.get(Type.DEFAULT).getHeight(playField))),
+			(new Rectangle(playField.getWidth()/2, playField.getHeight()/2+100, images.get(Type.DEFAULT).getWidth(playField), images.get(Type.DEFAULT).getHeight(playField))),
 				270,
-			2);
+			3);
 		this.ballsStorage = ballsStorage;
 		this.playField = playField;
 		while (true) {

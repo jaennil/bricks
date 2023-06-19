@@ -14,9 +14,24 @@ public class ArmorBrick extends Brick {
         Rectangle brickTop = new Rectangle(brickBounds.x, brickBounds.y, brickBounds.width, 1);
         Rectangle2D intersection = ballBounds.createIntersection(brickBounds);
         Rectangle intersectionRect = intersection.getBounds();
-        super.hitBy(ball);
-        if (!intersectionRect.intersects(brickTop)) {
-            isDead = false;
+        if (intersectionRect.intersects(brickTop)) {
+            super.hitBy(ball);
+            return;
         }
+        Rectangle brickLeft = new Rectangle(brickBounds.x, brickBounds.y, 1, brickBounds.height);
+        Rectangle brickRight = new Rectangle(brickBounds.x+brickBounds.width-1, brickBounds.y, 1, brickBounds.height);
+        Rectangle brickBottom = new Rectangle(brickBounds.x, brickBounds.y+brickBounds.height-1, brickBounds.width, 1);
+        if (intersectionRect.intersects(brickLeft) && intersectionRect.intersects(brickTop))
+            ball.setDirection(90+45);
+        else if (intersectionRect.intersects(brickTop) && intersectionRect.intersects(brickRight))
+            ball.setDirection(45);
+        else if (intersectionRect.intersects(brickRight) && intersectionRect.intersects(brickBottom))
+            ball.setDirection(270+45);
+        else if (intersectionRect.intersects(brickBottom) && intersectionRect.intersects(brickLeft))
+            ball.setDirection(180 + 45);
+        else if (intersectionRect.intersects(brickLeft) || intersectionRect.intersects(brickRight))
+            ball.getVelocity().reverseX();
+        else if (intersectionRect.intersects(brickTop) || intersectionRect.intersects(brickBottom))
+            ball.getVelocity().reverseY();
     }
 }
