@@ -1,6 +1,9 @@
 import java.awt.Image;
 import java.awt.Rectangle;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class BrickStorage extends ArrayList<Brick> {
 
@@ -25,6 +28,39 @@ public class BrickStorage extends ArrayList<Brick> {
 
 			y += Brick.images.get(Brick.Type.DEFAULT).getHeight(null) + 2;
 			x = startX;
+		}
+	}
+
+	public BrickStorage(PlayField playField, String path){
+		this.playField = playField;
+		int startX = 20;
+		int x = startX;
+		int y = 20;
+
+		try {
+			File myObj = new File(path);
+			Scanner myReader = new Scanner(myObj);
+			while (myReader.hasNextLine()) {
+				String line = myReader.nextLine();
+				for (int i = 0; i < line.length(); i++) {
+					char chr = line.charAt(i);
+					switch (chr) {
+						case 'B':
+							Brick.Type brickType = Brick.Type.random();
+							Brick newBrick = constructBrick(x, y, brickType);
+							playField.addSprite(newBrick);
+							add(newBrick);
+							break;
+					}
+					x += Brick.images.get(Brick.Type.DEFAULT).getWidth(null);
+				}
+				y += Brick.images.get(Brick.Type.DEFAULT).getHeight(null) + 2;
+				x = startX;
+			}
+			myReader.close();
+		} catch (FileNotFoundException e) {
+			System.out.println("An error occurred.");
+			e.printStackTrace();
 		}
 	}
 

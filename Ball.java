@@ -31,7 +31,10 @@ class Ball extends MovableSprite implements Runnable {
 		super(
 			playField,
 			images.get(Type.DEFAULT),
-			(new Rectangle(playField.getWidth()/2-images.get(Type.DEFAULT).getWidth()/2, playField.getHeight()/2+100, images.get(Type.DEFAULT).getWidth(), images.get(Type.DEFAULT).getHeight())),
+			/* #TODO: fix. this is supposed to spawn ball at the racket location, but it works once, because balls
+			created all at once so it does not mention current racket location. mb do it when new ball is spawned
+			 */
+			(new Rectangle((int)playField.getRacket().getBounds().getCenterX(), (int)playField.getRacket().getBounds().getY()-images.get(Type.DEFAULT).getHeight(), images.get(Type.DEFAULT).getWidth(), images.get(Type.DEFAULT).getHeight())),
 				270,
 			3);
 		this.ballsStorage = ballsStorage;
@@ -84,7 +87,7 @@ class Ball extends MovableSprite implements Runnable {
 				throw new RuntimeException(e);
 			}
 		}
-		PlayField.playSound("audio/death.wav");
+		PlayField.playAudio("audio/death.wav");
 		ballsStorage.remove(this);
 		playField.setBall(ballsStorage.getFirst());
 	}

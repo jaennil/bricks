@@ -30,6 +30,16 @@ class PlayField extends JPanel implements Runnable {
 		thread.start();
 	}
 
+	public void restart(String path) {
+		thread = new Thread(this);
+		sprites = new SpritesArray();
+		brickStorage = new BrickStorage(this, path);
+		racket = new Racket(this);
+		ballsStorage = new BallsStorage(this, 2);
+		ball = ballsStorage.getFirst();
+		thread.start();
+	}
+
 	public void run() {
 		running = true;
 		while (running) {
@@ -59,7 +69,7 @@ class PlayField extends JPanel implements Runnable {
 		graphics.drawString("balls: " + ballsStorage.size(), 50, 50);
 	}
 
-	public static void playSound(final String url) {
+	public static void playAudio(final String url) {
 		try {
 			Clip clip = AudioSystem.getClip();
 			AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(url).getAbsoluteFile());
@@ -100,6 +110,10 @@ class PlayField extends JPanel implements Runnable {
 
 	public Window getWindow() {
 		return window;
+	}
+
+	public Racket getRacket() {
+		return racket;
 	}
 
 	public Thread getThread() {
