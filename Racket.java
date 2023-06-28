@@ -136,16 +136,13 @@ class Racket extends MovableSprite implements Runnable, KeyListener, MouseListen
 	}
 
 	@Override
-	public void keyTyped(KeyEvent e) {
-
-	}
+	public void keyTyped(KeyEvent e) {}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {}
-
 
 	@Override
 	public void mouseEntered(MouseEvent e) {}

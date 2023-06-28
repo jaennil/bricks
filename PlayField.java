@@ -6,7 +6,7 @@ import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
 
-class PlayField extends JPanel implements Runnable {
+	class PlayField extends JPanel implements Runnable {
 	private final Window window;
 	private Thread thread;
 	private SpritesArray sprites;

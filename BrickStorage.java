@@ -43,8 +43,7 @@ public class BrickStorage extends ArrayList<Brick> {
 			while (myReader.hasNextLine()) {
 				String line = myReader.nextLine();
 				for (int i = 0; i < line.length(); i++) {
-					char chr = line.charAt(i);
-					switch (chr) {
+					switch (line.charAt(i)) {
 						case 'B':
 							Brick.Type brickType = Brick.Type.random();
 							Brick newBrick = constructBrick(x, y, brickType);

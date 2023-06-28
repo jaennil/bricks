@@ -3,6 +3,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 
 class Window extends JFrame {
 
@@ -13,9 +14,9 @@ class Window extends JFrame {
 				 InstantiationException e) {
 			throw new RuntimeException(e);
 		}
+		setDefaultLookAndFeelDecorated(true);
 		setTitle("Bricks");
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		setDefaultLookAndFeelDecorated(true);
 		PlayField playField = new PlayField(this);
 		createMenuBar(playField);
 		add(playField);
@@ -26,7 +27,13 @@ class Window extends JFrame {
 	}
 
 	public void createMenuBar(PlayField playField) {
-		JFileChooser jFileChooser = new JFileChooser(new File("C:\\Users\\ssush\\Desktop\\bricks\\"));
+		String currentPath;
+		try {
+			currentPath = new File(".").getCanonicalPath();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		JFileChooser jFileChooser = new JFileChooser(new File(currentPath));
 		jFileChooser.setAcceptAllFileFilterUsed(false);
 
 		// set a title for the dialog
