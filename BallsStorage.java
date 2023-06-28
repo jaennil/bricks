@@ -10,6 +10,7 @@ class BallsStorage extends ArrayList<Ball> {
     public Ball getFirst() {
         if (size() > 0) {
             Ball ball = get(0);
+            ball.updateBounds();
             ball.startMoving();
             return ball;
         } else {

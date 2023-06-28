@@ -46,6 +46,12 @@ class Ball extends MovableSprite implements Runnable {
         thread.start();
     }
 
+    public void updateBounds() {
+        this.bounds = new Rectangle((int) playField.getRacket().getBounds().getCenterX(),
+                (int) playField.getRacket().getBounds().getY() - images.get(Type.DEFAULT).getHeight(),
+                images.get(Type.DEFAULT).getWidth(), images.get(Type.DEFAULT).getHeight());
+    }
+
     public void move() {
         if (!isMoving)
             return;
