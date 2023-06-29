@@ -135,11 +135,13 @@ class Racket extends MovableSprite implements Runnable, KeyListener, MouseListen
 			stopMoving();
 		if (key == KeyEvent.VK_SPACE) {
 			if (!abilityUsed) {
-				spacePressed = false;
-				abilityBall.setDirection(90);
-				abilityBall.startMoving();
-				abilityBall = null;
-				abilityUsed = true;
+				if (abilityBall != null) {
+					spacePressed = false;
+					abilityBall.setDirection(90);
+					abilityBall.startMoving();
+					abilityBall = null;
+					abilityUsed = true;
+				}
 			}
 		}
 	}
