@@ -8,8 +8,8 @@ import java.util.Scanner;
 public class BrickStorage extends ArrayList<Brick> {
 
 	private final PlayField playField;
-	private final int rows = 1;
-	private final int columns = 1;
+	private final int rows = 5;
+	private final int columns = 5;
 
 	public BrickStorage(PlayField playField){
 		this.playField = playField;
@@ -19,14 +19,18 @@ public class BrickStorage extends ArrayList<Brick> {
 
 		for(int row = 0; row < this.rows; row++){
 			for(int column = 0; column < columns; column++){
+				boolean brickExists = Math.random() > 0.2;
+				if (!brickExists) {
+					x += Brick.images.get(Brick.Type.DEFAULT).getWidth();
+				}
 				Brick.Type brickType = Brick.Type.random();
 				Brick newBrick = constructBrick(x, y, brickType);
 				playField.addSprite(newBrick);
 				add(newBrick);
-				x += Brick.images.get(brickType).getWidth(null);
+				x += Brick.images.get(brickType).getWidth();
 			}
 
-			y += Brick.images.get(Brick.Type.DEFAULT).getHeight(null) + 2;
+			y += Brick.images.get(Brick.Type.DEFAULT).getHeight() + 2;
 			x = startX;
 		}
 	}
