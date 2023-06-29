@@ -10,6 +10,9 @@ class Racket extends MovableSprite implements Runnable, KeyListener, MouseListen
 	private Thread thread;
 	private boolean leftReleased = true;
 	private boolean rightReleased = true;
+	public boolean spacePressed = false;
+	private Ball abilityBall;
+	public boolean abilityUsed = false;
 	private int xToDrag = -1;
 
 	private final static BufferedImage image;
@@ -47,6 +50,11 @@ class Racket extends MovableSprite implements Runnable, KeyListener, MouseListen
 			return;
 		Rectangle b = playField.getBoundary();
 		bounds.x += velocity.getSpeedX();
+		if (abilityBall != null) {
+			Rectangle ballBounds = abilityBall.getBounds();
+			Rectangle newBounds = new Rectangle(ballBounds.x+(int)velocity.getSpeedX(), ballBounds.y+(int)velocity.getSpeedY(), ballBounds.width, ballBounds.height);
+			abilityBall.setBounds(newBounds);
+		}
 
 		if (bounds.x < b.x)
 			bounds.x = b.x;
@@ -55,6 +63,12 @@ class Racket extends MovableSprite implements Runnable, KeyListener, MouseListen
 	}
 
 	public void hitBy(Ball ball) {
+		if (spacePressed) {
+			if (!abilityUsed) {
+				ball.stopMoving();
+				abilityBall = ball;
+			}
+		}
 		Rectangle ballBounds = ball.getBounds();
 		Rectangle racketBounds = getBounds();
 		int factor = racketBounds.x + racketBounds.width - ballBounds.x - ballBounds.width;
@@ -103,6 +117,9 @@ class Racket extends MovableSprite implements Runnable, KeyListener, MouseListen
 			setDirection(0);
 			startMoving();
 		}
+		if (key == KeyEvent.VK_SPACE) {
+			spacePressed = true;
+		}
 	}
 
 	@Override
@@ -116,6 +133,15 @@ class Racket extends MovableSprite implements Runnable, KeyListener, MouseListen
 		}
 		if (leftReleased && rightReleased)
 			stopMoving();
+		if (key == KeyEvent.VK_SPACE) {
+			if (!abilityUsed) {
+				spacePressed = false;
+				abilityBall.setDirection(90);
+				abilityBall.startMoving();
+				abilityBall = null;
+				abilityUsed = true;
+			}
+		}
 	}
 
 	@Override

@@ -67,6 +67,7 @@ import java.util.ArrayList;
 		ball.draw(graphics);
 		graphics.setFont(new Font("TimesRoman", Font.BOLD, 15));
 		graphics.drawString("balls: " + ballsStorage.size(), 50, 50);
+		graphics.drawString("ability charges: " + (racket.abilityUsed ? 0 : 1), 150, 50);
 	}
 
 	public static void playAudio(final String url) {
