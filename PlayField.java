@@ -15,12 +15,16 @@ import java.util.ArrayList;
 	private Racket racket;
 	private Ball ball;
 	private boolean running = false;
+	public int score = 0;
+	public long startTime;
 
 	public PlayField(Window window) {
 		this.window = window;
 	}
 
 	public void restart() {
+		score = 0;
+		startTime = System.currentTimeMillis();
 		thread = new Thread(this);
 		sprites = new SpritesArray();
 		brickStorage = new BrickStorage(this);
@@ -31,6 +35,8 @@ import java.util.ArrayList;
 	}
 
 	public void restart(String path) {
+		score = 0;
+		startTime = System.currentTimeMillis();
 		thread = new Thread(this);
 		sprites = new SpritesArray();
 		brickStorage = new BrickStorage(this, path);
@@ -68,6 +74,7 @@ import java.util.ArrayList;
 		graphics.setFont(new Font("TimesRoman", Font.BOLD, 15));
 		graphics.drawString("balls: " + ballsStorage.size(), 50, 50);
 		graphics.drawString("ability charges: " + (racket.abilityUsed ? 0 : 1), 150, 50);
+		graphics.drawString("score: " + score, 50, 100);
 	}
 
 	public static void playAudio(final String url) {
@@ -92,6 +99,8 @@ import java.util.ArrayList;
 	}
 
 	public void win(Graphics graphics) {
+		System.out.println(System.currentTimeMillis()-startTime);
+		new ScoreDialog(score* 1000L /(System.currentTimeMillis()-startTime));
 		running = false;
 		graphics.setFont(new Font("TimesRoman", Font.BOLD, 40));
 		graphics.drawString("YOU WIN!", getWidth()/2-100, getHeight()/2);

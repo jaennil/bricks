@@ -8,8 +8,8 @@ import java.util.Scanner;
 public class BrickStorage extends ArrayList<Brick> {
 
 	private final PlayField playField;
-	private final int rows = 5;
-	private final int columns = 5;
+	private final int rows = 1;
+	private final int columns = 1;
 
 	public BrickStorage(PlayField playField){
 		this.playField = playField;

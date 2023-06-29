@@ -8,6 +8,7 @@ public class StickyBrick extends Brick {
 
     @Override
     public void hitBy(Ball ball) {
+        playField.score+=1000;
         ball.setDirection(270);
         ball.setImage(Ball.images.get(Ball.Type.STICKY));
         try {

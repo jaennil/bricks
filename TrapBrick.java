@@ -16,6 +16,7 @@ public class TrapBrick extends Brick {
         Rectangle collisionIntersection = collisionIntersection2D.getBounds();
         if (collisionIntersection.intersects(brickBottom)) {
             ball.setDead();
+            playField.score+=1000;
         } else {
             super.hitBy(ball);
             setDead();

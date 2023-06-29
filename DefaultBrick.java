@@ -8,6 +8,7 @@ public class DefaultBrick extends Brick {
 
     @Override
     public void hitBy(Ball ball) {
+        playField.score+=1000;
         setDead();
     }
 }

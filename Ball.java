@@ -93,7 +93,7 @@ class Ball extends MovableSprite implements Runnable {
         while (!playField.getThread().isAlive()) {
 
         }
-        while (!isDead) {
+        while (!isDead && playField.getThread().isAlive()) {
             move();
             try {
                 Thread.sleep(delay);
