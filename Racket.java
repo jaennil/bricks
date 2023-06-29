@@ -1,5 +1,6 @@
 import javax.imageio.ImageIO;
-import java.awt.Rectangle;
+import javax.swing.border.StrokeBorder;
+import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -177,4 +178,15 @@ class Racket extends MovableSprite implements Runnable, KeyListener, MouseListen
 
 	@Override
 	public void mouseExited(MouseEvent e) {}
+
+	@Override
+	public void draw(Graphics graphics) {
+		super.draw(graphics);
+		Graphics2D graphics2D = (Graphics2D) graphics;
+		if (abilityBall != null) {
+			graphics2D.setStroke(new BasicStroke(2));
+			graphics2D.setColor(Color.RED);
+			graphics2D.drawLine((int) bounds.getCenterX(), (int) getBounds().getCenterY()-2, (int) bounds.getCenterX(), (int) bounds.getCenterY() - 10000);
+		}
+	}
 }
